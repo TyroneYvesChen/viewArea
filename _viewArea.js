@@ -32,11 +32,11 @@
 
     ViewArea.prototype.ViewAreaResult = function (element) {
         var windowScrollTop = document.documentElement.scrollTop || document.body.scrollTop     //滚轮距离顶部高度
-        var domTopDistance = getElementTop(element)   //dom距离顶部高度
-        var domHeight = getDocumentPort(element).width    //dom自身高度
+        var domTopDistance = utils.getElementTop(element)   //dom距离顶部高度
+        var domHeight = utils.getDocumentPort(element).width    //dom自身高度
         var windowHeight = document.documentElement.clientHeight      //window可视区域高度
         var scrollTop = windowScrollTop > (domTopDistance + domHeight)
-        var  scrollBottom = windowScrollTop < (domTopDistance - windowHeight)
+        var scrollBottom = windowScrollTop < (domTopDistance - windowHeight)
         var result = scrollTop || scrollBottom
         return result
     }
@@ -52,12 +52,50 @@
         }
     }
     ViewArea.prototype.init = function (element) {
-        window.addEventListener('scroll',function(){
-            var result = this.ViewAreaResult(element)
-            this.callBackFn(element, result)
-        }.bind(this),false);
-        
+        var length = element.length
+        this.domDetector(element)
+        window.addEventListener('scroll', function () {
+            if (!length) {
+                this.bindingCbFn(element)
+            }
+            else {
+                for (var i = 0; i < length; i++) {
+                    this.bindingCbFn(element[i])
+                }
+            }
+            // this.bindingCbFn(element)
+        }.bind(this), false)
     }
+
+    ViewArea.prototype.domDetector = function (element) {
+        var length = element.length
+        var isDom
+
+        if (!length) {
+            isDom = utils.isDomElement(element)
+        }
+        else {
+            for (var i = 0; i < length; i++) {
+                isDom = utils.isDomElement(element[i])
+                if (!isDom) {
+                    // throw new Error('第' + i + '元素不是dom元素！')
+                    break
+                }
+            }
+        }
+        if(!isDom) {
+            throw new Error('元素不是dom元素！')
+        }
+    }
+
+    ViewArea.prototype.bindingCbFn = function (element) {
+        var result = this.ViewAreaResult(element)
+        this.callBackFn(element, result)
+    }
+
+
+
+    /*utils*/
 
     function getElementTop(elem) {
         var elemTop = elem.offsetTop//获得elem元素距相对定位的父元素的top
@@ -106,19 +144,22 @@
         }
     }
 
-    // $.fn.viewarea = function (options) {
-    //     return this.each(function () {
-    //         new ViewArea(this, options)
-    //     })
-    // }
+    // 判断是否是dom对象
+    function isDomElement(obj) {
+        return !!(obj && (obj.nodeType == 1 || obj.nodeType == 9));
+    }
+
+    var utils = {
+        getViewPort: getViewPort,
+        getDocumentPort: getDocumentPort,
+        getElementTop: getElementTop,
+        isDomElement: isDomElement
+    }
 
     function myPlugin() {
-        return function (element, options){
+        return function (element, options) {
             return new ViewArea(element, options)
         }
-        // return {
-        //     ViewArea: ViewArea
-        // }
     }
     return myPlugin()
 })

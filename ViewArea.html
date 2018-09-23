@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>ViewArea 判断可视区域（常用于css3动画）</title>
     <style>
-        #box {
+        .box {
             height: 300px;
             width: 300px;
             background-color: #ccc;
@@ -15,27 +15,38 @@
         }
     </style>
 </head>
-<div id="box"></div>
-
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
+<div id="box" class="box"></div>
 <body>
     <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="viewArea.js"></script>
-    <script type="text/javascript" src="./scroll.js"></script>
+    <!-- <script type="text/javascript" src="viewArea.js"></script> -->
+    <script type="text/javascript" src="./_viewArea.js"></script>
     <script>
         console.log(myPlugin)
         var obj = {
             inFn: function (element) {
                 //移入可视区域callback
-                console.log(element)
+                console.log("看得见")
                 $(element).text("看得见");
             },
             outFn: function (element) {
                 //移出可视区域callback
-                console.log(element)                
-                alert("看不见");
+                console.log("看不见")                
+                // alert("看不见");
             }
         }
-        myPlugin(document.getElementById("box"), obj)
+        myPlugin(document.querySelectorAll(".box"), obj)
         // $("#box").viewarea(obj);
     </script>
 </body>
