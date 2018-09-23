@@ -24,7 +24,8 @@
     var ViewArea = function (element, options) {
         var defaultOptions = {
             moveInOffset: 0,    //dom移入可视范围时判断的偏移量
-            moveOutOffset: 0  //dom移出可视范围时判断的偏移量
+            moveOutOffset: 0,  //dom移出可视范围时判断的偏移量
+            eventWait: 300      //节流触发时间间隔，默认300ms
         }
         this.options = Object.assign({}, defaultOptions, options)
         this.init(element)
@@ -53,8 +54,10 @@
     }
     ViewArea.prototype.init = function (element) {
         var length = element.length
+        var eventWait = this.options.eventWait
+        
         this.domDetector(element)
-        window.addEventListener('scroll', function () {
+        window.addEventListener('scroll', utils.throttle(function () {
             if (!length) {
                 this.bindingCbFn(element)
             }
@@ -64,7 +67,7 @@
                 }
             }
             // this.bindingCbFn(element)
-        }.bind(this), false)
+        }.bind(this), eventWait), false)
     }
 
     ViewArea.prototype.domDetector = function (element) {
@@ -83,7 +86,7 @@
                 }
             }
         }
-        if(!isDom) {
+        if (!isDom) {
             throw new Error('元素不是dom元素！')
         }
     }
@@ -149,11 +152,44 @@
         return !!(obj && (obj.nodeType == 1 || obj.nodeType == 9));
     }
 
+    // 节流
+    function throttle(func, wait) {
+        var timeout, context, args, result;
+        var previous = 0;
+
+        var later = function () {
+            previous = +new Date();
+            timeout = null;
+            func.apply(context, args)
+        };
+
+        var throttled = function () {
+            var now = +new Date();
+            //下次触发 func 剩余的时间
+            var remaining = wait - (now - previous);
+            context = this;
+            args = arguments;
+            // 如果没有剩余的时间了或者你改了系统时间
+            if (remaining <= 0 || remaining > wait) {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
+                previous = now;
+                func.apply(context, args);
+            } else if (!timeout) {
+                timeout = setTimeout(later, remaining);
+            }
+        };
+        return throttled;
+    }
+
     var utils = {
         getViewPort: getViewPort,
         getDocumentPort: getDocumentPort,
         getElementTop: getElementTop,
-        isDomElement: isDomElement
+        isDomElement: isDomElement,
+        throttle: throttle
     }
 
     function myPlugin() {
