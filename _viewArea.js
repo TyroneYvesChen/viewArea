@@ -32,9 +32,11 @@
     }
 
     ViewArea.prototype.ViewAreaResult = function (element) {
+        var moveInOffset = this.options.moveInOffset   //dom移入可视范围时判断的偏移量
+        var moveOutOffset = this.options.moveOutOffset   //dom移出可视范围时判断的偏移量
         var windowScrollTop = document.documentElement.scrollTop || document.body.scrollTop     //滚轮距离顶部高度
         var domTopDistance = utils.getElementTop(element)   //dom距离顶部高度
-        var domHeight = utils.getDocumentPort(element).width    //dom自身高度
+        var domHeight = element.offsetHeight    //dom自身高度
         var windowHeight = document.documentElement.clientHeight      //window可视区域高度
         var scrollTop = windowScrollTop > (domTopDistance + domHeight)
         var scrollBottom = windowScrollTop < (domTopDistance - windowHeight)

@@ -10,24 +10,23 @@
             width: 300px;
             background-color: #ccc;
         }
+        #box {
+            background: skyblue;
+        }
         body{
-            padding-top: 1500px;
+            padding: 1500px 0;
         }
     </style>
 </head>
 <div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
-<div id="box" class="box"></div>
+<!-- <div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div> -->
 <body>
     <script type="text/javascript" src="jquery.js"></script>
     <!-- <script type="text/javascript" src="viewArea.js"></script> -->
@@ -46,7 +45,8 @@
                 // alert("看不见");
             }
         }
-        myPlugin(document.querySelectorAll(".box"), obj)
+        // myPlugin(document.querySelectorAll(".box"), obj)
+        myPlugin(box, obj)
         // $("#box").viewarea(obj);
     </script>
 </body>
