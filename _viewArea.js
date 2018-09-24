@@ -23,8 +23,8 @@
 })(function () {
     var ViewArea = function (element, options) {
         var defaultOptions = {
-            moveInOffset: 0,    //dom移入可视范围时判断的偏移量
-            moveOutOffset: 0,  //dom移出可视范围时判断的偏移量
+            moveInOffset: 0,    //dom移入可视范围时判断的偏移量,单位px,向上方向为正
+            moveOutOffset: 0,  //dom移出可视范围时判断的偏移量,单位px,向下方向为正
             eventWait: 300      //节流触发时间间隔，默认300ms
         }
         this.options = Object.assign({}, defaultOptions, options)
@@ -38,8 +38,8 @@
         var domTopDistance = utils.getElementTop(element)   //dom距离顶部高度
         var domHeight = element.offsetHeight    //dom自身高度
         var windowHeight = document.documentElement.clientHeight      //window可视区域高度
-        var scrollTop = windowScrollTop > (domTopDistance + domHeight)
-        var scrollBottom = windowScrollTop < (domTopDistance - windowHeight)
+        var scrollTop = windowScrollTop > (domTopDistance + domHeight + moveOutOffset)
+        var scrollBottom = windowScrollTop < (domTopDistance - windowHeight - moveInOffset)
         var result = scrollTop || scrollBottom
         return result
     }
