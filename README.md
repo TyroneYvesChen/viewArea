@@ -1,4 +1,5 @@
-#ViewArea  判断可视区域（常用于css3动画）<br/>
+# ViewArea  判断可视区域（常用于css3动画）<br/>
+## 请用_viewArea.js，该文件为原生版本，jq版本后续会更新
 ```options
 {
     moveInOffset: 0,    //dom移入可视范围时判断的偏移量
