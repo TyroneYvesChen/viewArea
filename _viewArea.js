@@ -14,8 +14,7 @@
         var global = typeof window !== "undefined" ? window : self
 
         // initialize myPlugin as a global.
-        global.myPlugin = definition()
-        // global.myPlugin = definition        
+        global.myPlugin = definition()      
 
     } else {
         throw new Error("This environment was not anticipated by myPlugin,Please file a bug.")
@@ -68,7 +67,6 @@
                     this.bindingCbFn(element[i])
                 }
             }
-            // this.bindingCbFn(element)
         }.bind(this), eventWait), false)
     }
 
@@ -83,7 +81,6 @@
             for (var i = 0; i < length; i++) {
                 isDom = utils.isDomElement(element[i])
                 if (!isDom) {
-                    // throw new Error('第' + i + '元素不是dom元素！')
                     break
                 }
             }
